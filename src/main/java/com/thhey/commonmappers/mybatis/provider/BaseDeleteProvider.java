@@ -1,6 +1,7 @@
 package com.thhey.commonmappers.mybatis.provider;
 
 import com.thhey.commonmappers.mybatis.BaseEntity;
+import com.thhey.commonmappers.mybatis.BaseException;
 import com.thhey.commonmappers.mybatis.SqlFieldReader;
 import com.thhey.commonmappers.util.ConsoleUtils;
 import com.thhey.commonmappers.util.StringUtils;
@@ -24,7 +25,7 @@ public class BaseDeleteProvider {
      * @param <T>    实体类型
      * @return DELETE FROM tableName WHERE id = #{id}
      */
-    public static <T extends BaseEntity> String deleteById(T entity) {
+    public static <T extends BaseEntity> String deleteById(T entity) throws BaseException {
         String className = entity.getClass().getName();
         String sql = deleteByIdMap.get(className);
         if (StringUtils.isEmpty(sql)) {
@@ -62,7 +63,7 @@ public class BaseDeleteProvider {
      * @param <T>    实体类型
      * @return DELETE FROM tableName WHERE name = #{name} AND serviceName = #{serviceName}
      */
-    public static <T extends BaseEntity> String deleteByCondition(T entity) {
+    public static <T extends BaseEntity> String deleteByCondition(T entity) throws BaseException {
         String sql = getDeletePrefix(entity) + SqlFieldReader.getConditionByIndexSuffix(entity);
         ConsoleUtils.info("deleteByCondition", sql, entity);
         return sql;
@@ -75,7 +76,7 @@ public class BaseDeleteProvider {
      * @param <T>    实体类型
      * @return DELETE FROM tableName
      */
-    private static <T extends BaseEntity> String getDeletePrefix(T entity) {
+    private static <T extends BaseEntity> String getDeletePrefix(T entity) throws BaseException {
         return "DELETE FROM " + SqlFieldReader.getTableName(entity) + " ";
     }
 

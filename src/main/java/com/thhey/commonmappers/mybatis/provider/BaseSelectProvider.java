@@ -1,6 +1,7 @@
 package com.thhey.commonmappers.mybatis.provider;
 
 import com.thhey.commonmappers.mybatis.BaseEntity;
+import com.thhey.commonmappers.mybatis.BaseException;
 import com.thhey.commonmappers.mybatis.SqlFieldReader;
 import com.thhey.commonmappers.util.ConsoleUtils;
 import com.thhey.commonmappers.util.StringUtils;
@@ -25,7 +26,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 字段名 FROM 表名 WHERE id = #{id}
      */
-    public static <T extends BaseEntity> String selectById(T entity) {
+    public static <T extends BaseEntity> String selectById(T entity) throws BaseException {
         String sql = getSelectPrefix(entity) + " WHERE id = #{id}";
         ConsoleUtils.info("selectById", sql, entity);
         return sql;
@@ -56,7 +57,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 字段名 FROM 表名
      */
-    public static <T extends BaseEntity> String selectAll(T entity) {
+    public static <T extends BaseEntity> String selectAll(T entity) throws BaseException {
         String sql = getSelectPrefix(entity);
         ConsoleUtils.info("selectAll", sql, entity);
         return sql;
@@ -72,7 +73,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 字段名 FROM 表名 WHERE condition1 = #{value1} AND condition2 = #{value2} ORDER BY 字段名 ASC
      */
-    public static <T extends BaseEntity> String selectByCondition(T entity) {
+    public static <T extends BaseEntity> String selectByCondition(T entity) throws BaseException {
         String sql = getSelectPrefix(entity)
                 + SqlFieldReader.getConditionByIndexSuffix(entity)
                 + SqlFieldReader.getConditionBySortSuffix(entity);
@@ -87,7 +88,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT COUNT(1) FROM 表名
      */
-    public static <T extends BaseEntity> String selectCount(T entity) {
+    public static <T extends BaseEntity> String selectCount(T entity) throws BaseException {
         String sql = "SELECT COUNT(1) FROM " + SqlFieldReader.getTableName(entity);
         ConsoleUtils.info("selectCount", sql, entity);
         return sql;
@@ -101,7 +102,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT COUNT(1) FROM 表名 WHERE condition1 = #{value1} AND condition2 = #{condition2}
      */
-    public static <T extends BaseEntity> String selectCountByCondition(T entity) {
+    public static <T extends BaseEntity> String selectCountByCondition(T entity) throws BaseException {
         String sql = selectCount(entity) + SqlFieldReader.getConditionByIndexSuffix(entity);
         ConsoleUtils.info("selectCountByCondition", sql, entity);
         return sql;
@@ -114,7 +115,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 字段名 FROM 表名 LIMIT #{startRows},#{pageSize}
      */
-    public static <T extends BaseEntity> String selectPageList(T entity) {
+    public static <T extends BaseEntity> String selectPageList(T entity) throws BaseException {
         String sql = selectAll(entity) + " LIMIT #{baseStartRows},#{basePageSize}";
         ConsoleUtils.info("selectPageList", sql, entity);
         return sql;
@@ -127,7 +128,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 字段名 FROM 表名 WHERE condition1 = #{value1} AND condition2 = #{value2} ORDER BY 字段名 ASC LIMIT #{startRows},#{pageSize}
      */
-    public static <T extends BaseEntity> String selectPageListByCondition(T entity) {
+    public static <T extends BaseEntity> String selectPageListByCondition(T entity) throws BaseException {
         String sql = selectByCondition(entity) + " LIMIT #{baseKyleStartRows},#{baseKylePageSize}";
         ConsoleUtils.info("selectPageListByCondition", sql, entity);
         return sql;
@@ -140,7 +141,7 @@ public class BaseSelectProvider {
      * @param <T>    实体类型
      * @return SELECT 所有字段 FROM 表名
      */
-    private static <T extends BaseEntity> String getSelectPrefix(T entity) {
+    private static <T extends BaseEntity> String getSelectPrefix(T entity) throws BaseException {
         String className = entity.getClass().getName();
         String sql;
         if (entity.isBaseDetailed()) {

@@ -1,6 +1,7 @@
 package com.thhey.commonmappers.mybatis.provider;
 
 import com.thhey.commonmappers.mybatis.BaseEntity;
+import com.thhey.commonmappers.mybatis.BaseException;
 import com.thhey.commonmappers.mybatis.SqlFieldReader;
 import com.thhey.commonmappers.util.ConsoleUtils;
 
@@ -20,7 +21,7 @@ public class BaseUpdateProvider {
      * @param <T>    实体类型
      * @return UPDATE 表名 SET field1 = #{value1},field2 = #{value2} WHERE id = #{id}
      */
-    public static <T extends BaseEntity> String updateById(T entity) {
+    public static <T extends BaseEntity> String updateById(T entity) throws BaseException {
         String sql = getUpdatePrefix(entity) + " WHERE id = #{id}";
         ConsoleUtils.info("updateById", sql, entity);
         return sql;
@@ -50,7 +51,7 @@ public class BaseUpdateProvider {
      * @param <T>    实体类型
      * @return UPDATE 表名 SET
      */
-    private static <T extends BaseEntity> String getUpdatePrefix(T entity) {
+    private static <T extends BaseEntity> String getUpdatePrefix(T entity) throws BaseException {
         StringBuilder builder = new StringBuilder();
         builder.append("UPDATE ").append(SqlFieldReader.getTableName(entity)).append(" SET ");
         List<String> fields = SqlFieldReader.getFields(entity);

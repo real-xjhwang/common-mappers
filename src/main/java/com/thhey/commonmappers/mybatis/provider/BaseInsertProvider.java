@@ -1,6 +1,7 @@
 package com.thhey.commonmappers.mybatis.provider;
 
 import com.thhey.commonmappers.mybatis.BaseEntity;
+import com.thhey.commonmappers.mybatis.BaseException;
 import com.thhey.commonmappers.mybatis.SqlFieldReader;
 import com.thhey.commonmappers.util.ConsoleUtils;
 import com.thhey.commonmappers.util.StringUtils;
@@ -34,7 +35,7 @@ public class BaseInsertProvider {
      * @param <T>    实体类型
      * @return sql
      */
-    public static <T extends BaseEntity> String insert(T entity) {
+    public static <T extends BaseEntity> String insert(T entity) throws BaseException {
         String className = entity.getClass().getName();
         String sql = insertMap.get(className);
 
@@ -69,7 +70,7 @@ public class BaseInsertProvider {
      * @param <T>    实体类型
      * @return sql
      */
-    public static <T extends BaseEntity> String insertAndReturnKey(T entity) {
+    public static <T extends BaseEntity> String insertAndReturnKey(T entity) throws BaseException {
         String className = entity.getClass().getName();
         String sql = insertAndReturnKeyMap.get(className);
         if (StringUtils.isEmpty(sql)) {
